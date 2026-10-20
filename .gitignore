@@ -1,0 +1,12 @@
+# Signing secrets
+*.jks
+*.keystore
+key.properties
+# Build outputs
+build/
+.dart_tool/
+*.apk
+*.aab
+__pycache__/
+# OS
+.DS_Store
