@@ -201,12 +201,12 @@ if [ -n "$ARTIFACT" ]; then
   elif have python3; then python3 -c "import zipfile,sys;z=zipfile.ZipFile(sys.argv[1]);[z.extract(n,sys.argv[2]) for n in z.namelist() if '/lib/' in '/'+n and n.endswith('.so')]" "$ARTIFACT" "$X"
   fi
   bad=""; ok=0; total=0
-  for so in $(find "$X" -path '*arm64-v8a*' -name '*.so' -o -path '*x86_64*' -name '*.so' 2>/dev/null); do
+  while IFS= read -r -d '' so; do
     total=$((total+1)); a="$(elf_align "$so")"
     if [ -z "$a" ]; then bad="$bad $(basename "$so")(?)"
     elif [ "$a" -lt 16384 ]; then bad="$bad $(echo "$so" | sed "s#$X/##")($a)"
     else ok=$((ok+1)); fi
-  done
+  done < <(find "$X" \( -path '*arm64-v8a*' -o -path '*x86_64*' \) -name '*.so' -print0 2>/dev/null)
   if [ "$total" -eq 0 ]; then rec P1-03 PASS "16 KB page size (artifact)" "no 64-bit native libraries in $(basename "$ARTIFACT")"
   elif [ -z "$bad" ]; then rec P1-03 PASS "16 KB page size (artifact)" "$ok/$total 64-bit .so with LOAD alignment ≥ 16 KB (dated, re-verify)"
   else rec P1-03 FAIL "16 KB page size (artifact)" "misaligned:$bad"; fi
@@ -293,7 +293,7 @@ fi
 # md5 of the Flutter template ic_launcher.png (mdpi,hdpi,xhdpi,xxhdpi,xxxhdpi), fallback when no SDK is present
 TPL_MD5=" 6270344430679711b81476e29878caa7 13e9c72ec37fac220397aa819fa1ef2d a0a8db5985280b3679d99a820ae2db79 afe1b655b9f32da22f9a4301bb8e6ba8 57838d52c318faff743130c3fcfae0c6 "
 if [ -n "$FLUTTER_ROOT_DIR" ]; then
-  for t in $(find "$FLUTTER_ROOT_DIR/packages/flutter_tools/templates" -path '*mipmap-*' -name 'ic_launcher.png' 2>/dev/null); do TPL_MD5="$TPL_MD5$(md5of "$t") "; done
+  while IFS= read -r -d '' t; do TPL_MD5="$TPL_MD5$(md5of "$t") "; done < <(find "$FLUTTER_ROOT_DIR/packages/flutter_tools/templates" -path '*mipmap-*' -name 'ic_launcher.png' -print0 2>/dev/null)
 fi
 icons="$(find "$RES" -path '*mipmap-*' -name 'ic_launcher.png' 2>/dev/null)"
 if [ -z "$icons" ]; then rec P1-09 WARN "Custom launcher icon" "no mipmap-*/ic_launcher.png"

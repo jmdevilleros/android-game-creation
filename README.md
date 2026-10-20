@@ -75,7 +75,7 @@ Exit codes: `0` means no FAIL, `1` means at least one FAIL (or a WARN when `--st
 | Language | Markdown | PDF | Rebuild |
 |---|---|---|---|
 | English | `checklists/en/android_game_checklist_generic_en.md` | `…_en.pdf` | `cd checklists/en && python3 build_pdf_generic_en.py` |
-| Español | `checklists/es/checklist_generico_juegos_android.md` | `….pdf` | `cd checklists/es && python3 build_pdf_generic.py` |
+| Spanish | `checklists/es/checklist_generico_juegos_android.md` | `….pdf` | `cd checklists/es && python3 build_pdf_generic.py` |
 
 ## Safety
 
@@ -83,9 +83,9 @@ Exit codes: `0` means no FAIL, `1` means at least one FAIL (or a WARN when `--st
 - The skill applies fixes only on a new branch, and only after you confirm. It never commits keystores or `key.properties`, and it never pushes or publishes without your explicit approval.
 - Requirements with dates (target API, 16 KB, Android 16 behavior, developer verification) are marked ⚠. They are re-checked against the official docs on every run.
 
-## En español
+## License
 
-Skill para agentes de IA que guía la **creación** de un juego Android nuevo o la **auditoría** de un repo existente antes de publicarlo en Google Play. Tiene 94 puntos en 13 fases, pensados primero para Flutter + Flame. Para instalarlo, clona este repo en la carpeta de skills de tu agente (por ejemplo `~/.grok/skills/android-game-creation`) y úsalo con `/android-game-creation audit .` o `/android-game-creation new`. El script `scripts/verify.sh` hace las revisiones automáticas en modo solo lectura. Los checklists genéricos en español e inglés, en Markdown y PDF, están en `checklists/`.
+[MIT](LICENSE)
 
 ## Author
 

@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run shellcheck on verify.sh
-        run: shellcheck -S error scripts/verify.sh
+        run: shellcheck -S warning scripts/verify.sh
